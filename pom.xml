@@ -3,4 +3,22 @@
   <groupId>org.jks</groupId>
   <artifactId>fsw</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  
+  <dependencies>
+  	<!-- https://mvnrepository.com/artifact/com.mortennobel/java-image-scaling -->
+		<dependency>
+		    <groupId>com.mortennobel</groupId>
+		    <artifactId>java-image-scaling</artifactId>
+		    <version>0.8.6</version>
+		</dependency>
+  </dependencies>
+  
+  <profiles>
+  	<profile>
+  		<id>profile-1</id>
+  		<activation>
+  			<activeByDefault>true</activeByDefault>
+  		</activation>
+  	</profile>
+  </profiles>
 </project>
