@@ -15,7 +15,7 @@
   
   <profiles>
   	<profile>
-  		<id>profile-1</id>
+  		<id>dev</id>
   		<activation>
   			<activeByDefault>true</activeByDefault>
   		</activation>
