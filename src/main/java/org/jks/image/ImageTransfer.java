@@ -13,14 +13,6 @@ public class ImageTransfer {
 	int height;
 	String suffix;
 
-	/**
-	 * 缩放文件比例
-	 * 
-	 * @param srcFilePath 原文件地址
-	 * @param ratio 比例
-	 * @return
-	 * @throws Exception
-	 */
 	public static BufferedImage transfer(String srcFilePath, double ratio) throws Exception{
 		BufferedImage bufferedImage = from(srcFilePath);
 		int width = bufferedImage.getWidth();  
