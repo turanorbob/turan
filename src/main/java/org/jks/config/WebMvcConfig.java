@@ -1,4 +1,4 @@
-package org.jks.image.config;
+package org.jks.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
