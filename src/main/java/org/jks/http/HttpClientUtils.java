@@ -6,6 +6,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.jks.model.CacheFile;
 import org.springframework.util.FileSystemUtils;
 
 import java.io.*;
@@ -18,22 +19,8 @@ import java.util.concurrent.Executors;
  * Created by turan on 2017/7/24 0024.
  */
 public class HttpClientUtils {
-    /**
-     * 最大线程池
-     */
-    public static final int THREAD_POOL_SIZE = 5;
-
-    public interface HttpClientDownLoadProgress {
-        public void onProgress(int progress);
-    }
 
     private static HttpClientUtils httpClientDownload;
-
-    private ExecutorService downloadExcutorService;
-
-    private HttpClientUtils() {
-        downloadExcutorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
-    }
 
     public static HttpClientUtils getInstance() {
         if (httpClientDownload == null) {
@@ -48,30 +35,8 @@ public class HttpClientUtils {
      * @param url
      * @param filePath
      */
-    public void download(final String url, final String filePath) {
-        downloadExcutorService.execute(new Runnable() {
-
-            public void run() {
-                httpDownloadFile(url, filePath, null, null);
-            }
-        });
-    }
-
-    /**
-     * 下载文件
-     *
-     * @param url
-     * @param filePath
-     * @param progress 进度回调
-     */
-    public void download(final String url, final String filePath,
-                         final HttpClientDownLoadProgress progress) {
-        downloadExcutorService.execute(new Runnable() {
-
-            public void run() {
-                httpDownloadFile(url, filePath, progress, null);
-            }
-        });
+    public CacheFile download(final String url, final String filePath) {
+        return httpDownloadFile(url, filePath, null);
     }
 
     /**
@@ -80,38 +45,33 @@ public class HttpClientUtils {
      * @param url
      * @param filePath
      */
-    private void httpDownloadFile(String url, String filePath,
-                                  HttpClientDownLoadProgress progress, Map<String, String> headMap) {
+    private CacheFile httpDownloadFile(String url, String filePath, Map<String, String> headMap) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
+        CacheFile cacheFile = new CacheFile();
+        String fileName = null;
         try {
-
             HttpGet httpGet = new HttpGet(url);
             setGetHead(httpGet, headMap);
             CloseableHttpResponse response = httpclient.execute(httpGet);
             try {
                 HttpEntity httpEntity = response.getEntity();
+                String contentType = httpEntity.getContentType().getValue();
+                cacheFile.setContentType(contentType);
+                fileName = response.getFirstHeader("Etag").getValue();
 
-                String fileName = response.getFirstHeader("Etag").getValue();
-
-                long contentLength = httpEntity.getContentLength();
                 InputStream is = httpEntity.getContent();
                 ByteArrayOutputStream output = new ByteArrayOutputStream();
                 byte[] buffer = new byte[4096];
                 int r = 0;
-                long totalRead = 0;
                 while ((r = is.read(buffer)) > 0) {
                     output.write(buffer, 0, r);
-                    totalRead += r;
-                    if (progress != null) {// 回调进度
-                        progress.onProgress((int) (totalRead * 100 / contentLength));
-                    }
                 }
                 File dir = new File(filePath);
                 if (!dir.exists()) {
                     dir.mkdirs();
                 }
                 fileName = filePath + File.separator + fileName.replaceAll("\"","");
-
+                cacheFile.setPath(fileName);
                 FileOutputStream fos = new FileOutputStream(fileName);
                 output.writeTo(fos);
                 output.flush();
@@ -129,6 +89,7 @@ public class HttpClientUtils {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            return cacheFile;
         }
     }
 
