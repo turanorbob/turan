@@ -47,11 +47,11 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <!-- 自动扫描entity目录, 省掉Configuration.xml里的手工配置 -->
-        <property name="mapperLocations" value="classpath:org/jks/demo/mapper/*Mapper.xml" />
+        <property name="mapperLocations" value="classpath:com/jf/authentication/dao/mapper/*Mapper.xml" />
     </bean>
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.jf.project.portal.dao" />
+        <property name="basePackage" value="com.jf.authentication.dao" />
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
     </bean>
 </beans>

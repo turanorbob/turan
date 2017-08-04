@@ -8,5 +8,5 @@
     <dubbo:registry address="zookeeper://192.168.254.128:44444" />
 
     <!-- 生成远程服务代理，可以和本地bean一样使用demoService -->
-    <dubbo:reference id="demoService" interface="org.jks.demo.service.DemoService" />
+    <dubbo:reference id="demoService" interface="com.jf.authentication.service.DemoService" />
 </beans>
