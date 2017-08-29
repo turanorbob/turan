@@ -13,11 +13,11 @@
         </createTable>
 
         <createTable tableName="auth_manufacturer_version" remarks="设备版本">
-            <column name="manufacturer_version" type="varchar(30)" remarks="版本号">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_auth_manufacturer_version"/>
-            </column>
+            <column name="manufacturer_version" type="varchar(30)" remarks="版本号"/>
             <column name="manufacturer_name" type="varchar(255)" remarks="厂商名称"/>
         </createTable>
+        <addUniqueConstraint tableName="auth_manufacturer_version" constraintName="uk_auth_manufacturer_version"
+                             columnNames="manufacturer_version,manufacturer_name"/>
 
         <createTable tableName="auth_parameters" remarks="映射参数">
             <column name="device_config_name" type="varchar(255)" remarks="设备参数"></column>
@@ -28,6 +28,7 @@
 
         <createTable tableName="auth_manufacturer_version_parameters" remarks="版本参数映射">
             <column name="manufacturer_version" type="varchar(30)" remarks="版本号"></column>
+            <column name="manufacturer_name" type="varchar(255)" remarks="厂商名称"/>
             <column name="device_config_name" type="varchar(255)" remarks="设备参数"></column>
             <column name="parameter_name" type="varchar(255)" remarks="系统参数"></column>
         </createTable>
