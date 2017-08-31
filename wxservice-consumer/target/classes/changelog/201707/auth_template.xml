@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="turan" id="20170803152205" context="production">
+        <createTable tableName="auth_manufacturer" remarks="设备厂商">
+            <column name="manufacturer_name" type="varchar(255)" remarks="厂商名称">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_auth_manufacturer"/>
+            </column>
+            <column name="description" type="varchar(512)" remarks="描述"></column>
+        </createTable>
+
+        <createTable tableName="auth_manufacturer_version" remarks="设备版本">
+            <column name="manufacturer_version" type="varchar(30)" remarks="版本号"/>
+            <column name="manufacturer_name" type="varchar(255)" remarks="厂商名称"/>
+        </createTable>
+        <addUniqueConstraint tableName="auth_manufacturer_version" constraintName="uk_auth_manufacturer_version"
+                             columnNames="manufacturer_version,manufacturer_name"/>
+
+        <createTable tableName="auth_parameters" remarks="映射参数">
+            <column name="device_config_name" type="varchar(255)" remarks="设备参数"></column>
+            <column name="parameter_name" type="varchar(255)" remarks="系统参数"></column>
+        </createTable>
+        <addUniqueConstraint tableName="auth_parameters" constraintName="uk_auth_parameters"
+                             columnNames="device_config_name,parameter_name"/>
+
+        <createTable tableName="auth_manufacturer_version_parameters" remarks="版本参数映射">
+            <column name="manufacturer_version" type="varchar(30)" remarks="版本号"></column>
+            <column name="manufacturer_name" type="varchar(255)" remarks="厂商名称"/>
+            <column name="device_config_name" type="varchar(255)" remarks="设备参数"></column>
+            <column name="parameter_name" type="varchar(255)" remarks="系统参数"></column>
+        </createTable>
+        <addUniqueConstraint tableName="auth_manufacturer_version_parameters"
+                             constraintName="uk_auth_manufacturer_version_parameters"
+                             columnNames="manufacturer_version,device_config_name,parameter_name"/>
+
+        <createTable tableName="auth_template" remarks="认证模板">
+            <column name="template_name" type="varchar(255)" remarks="模板名">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_auth_template"/>
+            </column>
+            <column name="manufacturer_name" type="varchar(255)" remarks="厂商名称"></column>
+            <column name="manufacturer_version" type="varchar(30)" remarks="厂商版本"></column>
+            <column name="auth_type" type="int" remarks="认证类型（1：portal 2:wifidog）"></column>
+            <column name="auth_type_version" type="varchar(30)" remarks="认证类型版本"></column>
+            <column name="template_content" type="text" remarks="模板内容"></column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
