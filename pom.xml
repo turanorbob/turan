@@ -208,6 +208,19 @@
             <version>3.6</version>
         </dependency>
 
+        <!-- weixin begin -->
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-common</artifactId>
+            <version>2.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-mp</artifactId>
+            <version>2.8.0</version>
+        </dependency>
+        <!-- weixin end -->
+
     </dependencies>
 
     <profiles>
